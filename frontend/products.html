@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Nexus Stream - Full Inventory Access</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- Root and Global Styles - NEON TECH THEME --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* High-Contrast Neon Palette */
+            --primary-color: #00ffff; /* Neon Cyan/Blue (Action/Highlight) */
+            --secondary-color: #ff00ff; /* Neon Magenta Accent (Danger/Cart) */
+            --text-color: #f0f0f0; /* Light text on dark BG */
+            --light-text: #B0B0B0;
+            --dark-bg: #0d0d0d; /* Deep Black Background */
+            --header-bg: #1a1a1a;
+            --card-bg: #1e1e1e; /* Card/Modal Background */
+            --button-hover: #00e5e5;
+            --cart-bg: #220022; /* Darker magenta tint for the cart */
+            --border-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* --- Header/Nav --- */
+        .main-header {
+            background-color: var(--header-bg);
+            border-bottom: 2px solid var(--primary-color);
+            padding: 15px 30px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        .store-name a {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--secondary-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px var(--secondary-color);
+        }
+        .user-action a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.2s;
+        }
+        .user-action a:hover {
+            color: var(--button-hover);
+            text-shadow: 0 0 3px var(--button-hover);
+        }
+
+        /* --- Main Layout --- */
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+            max-width: 100vw;
+        }
+
+        /* --- Products Grid --- */
+        .product-area {
+            flex: 3;
+            padding: 0;
+            max-width: calc(100vw - 300px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .section-title {
+            margin: 25px 20px;
+            font-size: 2em;
+            color: var(--primary-color);
+            text-align: center;
+            font-weight: 700;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px; 
+            padding: 0 25px 30px 25px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px; 
+            margin-bottom: 12px;
+            border-radius: 6px;
+            object-fit: cover; 
+            background-color: #000;
+            border: 1px solid var(--primary-color);
+        }
+
+        .product-title {
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-shadow: 0 0 2px var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-bg);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #ff33ff;
+            box-shadow: 0 0 8px var(--secondary-color);
+        }
+
+        /* --- Cart Sidebar --- */
+        .cart-sidebar {
+            flex: 0 0 300px;
+            background-color: var(--cart-bg);
+            padding: 20px;
+            border-left: 2px solid var(--secondary-color);
+            position: sticky;
+            top: 0;
+            height: 100vh; 
+            overflow-y: auto;
+        }
+
+        .cart-sidebar h3 {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 0 3px var(--secondary-color);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #555;
+            font-size: 0.95em;
+            color: var(--light-text);
+        }
+
+        .cart-item button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1em;
+            margin-left: 10px;
+            transition: color 0.2s;
+        }
+        .cart-item button:hover {
+            color: var(--button-hover);
+        }
+        
+        .cart-summary {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px solid var(--secondary-color);
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            color: var(--primary-color);
+        }
+        
+        .checkout-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+        .checkout-btn:hover:not(:disabled) {
+            background-color: var(--button-hover);
+        }
+        .checkout-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* --- Utility Classes --- */
+        .text-muted {
+            color: var(--light-text);
+        }
+        
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 950px) {
+            .main-container {
+                flex-direction: column;
+            }
+            .product-area {
+                max-width: 100%;
+            }
+            .cart-sidebar {
+                position: relative;
+                height: auto;
+                flex: none;
+                order: -1; 
+                border-left: none;
+                border-bottom: 2px solid var(--secondary-color);
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        
+        <div class="product-area">
+            <header class="main-header">
+                <div class="store-name">
+                    <a href="index.html">**⚡ NEXUS STREAM**</a>
+                </div>
+                <div class="user-action">
+                    <a href="signup.html">
+                        <i class="fas fa-user-circle"></i> Access Profile
+                    </a>
+                </div>
+            </header>
+
+            <h2 class="section-title">✨ Full Inventory: Cybernetic Gear and Tech Upgrades </h2>
+
+            <div class="product-grid" id="product-list">
+                </div>
+        </div>
+        
+        <div class="cart-sidebar">
+            <h3><i class="fas fa-shopping-basket me-2"></i> Transaction Buffer</h3>
+            
+            <div id="cart-items">
+                <p id="empty-cart-message" class="text-muted">Transaction buffer is empty. Initiate purchase.</p>
+            </div>
+            
+            <div class="cart-summary">
+                <span>Total Value:</span>
+                <span id="cart-total">₱0.00</span>
+            </div>
+
+            <button class="checkout-btn" id="checkout-btn" disabled>
+                <i class="fas fa-credit-card me-2"></i> Finalize Purchase Protocol
+            </button>
+        </div>
+
+    </div>
+    
+    <script>
+    // --- Product Data (20 Gadget Items) ---
+    const products = [
+        { id: 1, name: "Neuralink V.4 Upgrade Chip", price: 54999.00, img: "assets/gadget-1.jpg" },
+        { id: 2, name: "Tactical Data Shard Reader", price: 8200.00, img: "assets/tech-2.jpeg" },
+        { id: 3, name: "Chrono-Lock Smartwatch", price: 2550.00, img: "assets/tech-3.jpg" },
+        { id: 4, name: "Aura-Scan AR Contact Lenses", price: 12100.00, img: "assets/tech-4.jpg" },
+        { id: 5, name: "Stealth Micro-Drone Kit", price: 4150.00, img: "assets/gadget-5.jpg" },
+        { id: 6, name: "Holo-Projector Cuff", price: 17300.00, img: "assets/tech-6.jpg" },
+        { id: 7, name: "Personalized Biometric Scanner", price: 4900.00, img: "assets/gadget-7.jpg" },
+        { id: 8, name: "Energy Cell Recharge Dock", price: 1375.00, img: "assets/gadget-8.jpg" },
+        { id: 9, name: "Silent Whisper Communicator", price: 9500.00, img: "assets/gadget-9.jpg" },
+        { id: 10, name: "Flexible Solar Skin Patch", price: 1800.00, img: "assets/gadget-10.jpg" },
+        { id: 11, name: "Digital Lock Breaker Unit", price: 6200.00, img: "assets/gadget-11.jpg" },
+        { id: 12, name: "G-Force Dampening Gloves", price: 11500.00, img: "assets/gadget-12.jpg" },
+        { id: 13, name: "Vintage Audio Log Decoder", price: 3400.00, img: "assets/gadget-13.jpg" },
+        { id: 14, name: "Cyber-Deck 3000 Portable", price: 35000.00, img: "assets/gadget-14.jpg" },
+        { id: 15, name: "Quantum Data Key Fob", price: 7800.00, img: "assets/gadget-15.jpg" },
+        { id: 16, name: "Modular Power Gauntlet", price: 5100.00, img: "assets/gadget-16.jpg" },
+        { id: 17, name: "Infrared Night Scope Lens", price: 10500.00, img: "assets/gadget-17.jpg" },
+        { id: 18, name: "Miniature EMP Generator", price: 950.00, img: "assets/gadget-18.jpg" },
+        { id: 19, name: "Exo-Spine Stabilization Unit", price: 72000.00, img: "assets/gadget-19.jpg" },
+        { id: 20, name: "Cortex Memory Backup Drive", price: 3100.00, img: "assets/gadget-20.jpg" }
+    ];
+
+    // --- State and Element References ---
+    // Note: Cart key updated to be consistent with the new theme.
+    let cart = JSON.parse(localStorage.getItem('nexusStreamCart')) || []; 
+    const cartItemsContainer = document.getElementById('cart-items');
+    const cartTotalDisplay = document.getElementById('cart-total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+
+    // --- Utility Functions ---
+
+    // Helper to format currency (Philippine Peso)
+    const formatCurrency = (amount) => {
+        return `₱${amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+    
+    // --- Core Functions ---
+
+    function renderProducts() {
+        const productList = document.getElementById('product-list');
+        productList.innerHTML = products.map(p => `
+            <div class="product-card">
+                <img src="${p.img}" alt="${p.name}" class="product-image">
+                <h3 class="product-title">${p.name}</h3>
+                <p class="product-price">${formatCurrency(p.price)}</p>
+                <button class="add-to-cart-btn" onclick="addToCart(${p.id})">
+                    <i class="fas fa-cart-plus"></i> Initiate Transfer
+                </button>
+            </div>
+        `).join('');
+    }
+
+    function renderCart() {
+        cartItemsContainer.innerHTML = '';
+        let total = 0;
+
+        if (cart.length === 0) {
+            emptyCartMessage.style.display = 'block';
+            checkoutBtn.disabled = true;
+        } else {
+            emptyCartMessage.style.display = 'none';
+            checkoutBtn.disabled = false;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <span>${item.name} (${item.quantity}x)</span>
+                    <div>
+                        <span>${formatCurrency(itemTotal)}</span>
+                        <button onclick="deleteItem(${index})" title="Remove item">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+
+        cartTotalDisplay.textContent = formatCurrency(total);
+        localStorage.setItem('nexusStreamCart', JSON.stringify(cart));
+    }
+
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        const cartItem = cart.find(item => item.id === productId);
+
+        if (cartItem) {
+            cartItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 }); 
+        }
+
+        renderCart();
+        console.log(`[LOG] ${product.name} buffered for transaction.`);
+    }
+
+    function deleteItem(index) {
+        const itemName = cart[index].name;
+        cart.splice(index, 1); 
+        renderCart();
+        console.log(`[LOG] ${itemName} removed from buffer.`);
+    }
+
+    function checkout() {
+        if (cart.length > 0) {
+            alert("Initiating payment protocol for " + cartTotalDisplay.textContent);
+            // window.location.href = 'payment.html'; 
+        } else {
+            alert("Transaction buffer empty! Please select inventory items first.");
+        }
+    }
+
+    // --- Global Functions (Needed because they are called from inline HTML) ---
+    window.addToCart = addToCart;
+    window.deleteItem = deleteItem;
+
+    // --- Event Listeners and Initial Load ---
+    checkoutBtn.addEventListener('click', checkout);
+    
+    window.onload = () => {
+        renderProducts();
+        renderCart();
+    };
+    
+</script>
+</body>
+</html>

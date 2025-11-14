@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Nexus Stream Tech</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* --- Root and Global Styles - NEON TECH THEME --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* High-Contrast Neon Palette */
+            --primary-color: #00ffff; /* Neon Cyan/Blue */
+            --secondary-color: #ff00ff; /* Neon Magenta Accent */
+            --text-color: #f0f0f0;
+            --light-text-color: #B0B0B0;
+            --dark-bg: #0d0d0d; /* Deep Black Background */
+            --header-bg: #1a1a1a;
+            --card-bg: #222; /* Slightly Lighter Card Background */
+            --white: #ffffff;
+            --button-hover: #00e5e5; /* Lighter cyan for hover */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern, clean font */
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Header Styles - Sleek and Minimal --- */
+        .main-header {
+            background-color: var(--header-bg);
+            border-bottom: 2px solid var(--primary-color); /* Neon line border */
+            padding: 15px 30px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .store-name a {
+            font-size: 2.2em; 
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--primary-color); 
+            text-decoration: none;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px var(--primary-color); /* Neon Glow */
+        }
+
+        /* --- Search Input Styles --- */
+        .discreet-search-container {
+            position: relative;
+        }
+        #search-icon {
+            cursor: pointer;
+            color: var(--primary-color);
+            font-size: 1.5em;
+            transition: color 0.2s;
+            text-shadow: 0 0 3px var(--primary-color); 
+        }
+        #search-icon:hover {
+            color: var(--button-hover);
+            text-shadow: 0 0 5px var(--button-hover); 
+        }
+        #search-input-discreet {
+            position: absolute;
+            right: 0;
+            top: 45px;
+            width: 300px; /* Slightly wider input */
+            padding: 10px 15px;
+            background-color: #333;
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
+            border-radius: 4px;
+            display: none; 
+            z-index: 10;
+        }
+
+        /* --- User Actions & Icons --- */
+        .header-actions {
+            display: flex;
+            gap: 25px; 
+            align-items: center;
+        }
+
+        .action-icon-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--light-text-color);
+            text-decoration: none;
+            font-size: 0.8em;
+            position: relative;
+            transition: color 0.2s;
+        }
+
+        .action-icon-group:hover {
+            color: var(--primary-color);
+        }
+        
+        .action-icon-group i {
+            font-size: 1.6em; 
+            margin-bottom: 2px;
+            color: var(--light-text-color);
+            transition: color 0.2s;
+        }
+
+        .action-icon-group:hover i {
+            color: var(--primary-color);
+        }
+
+        .cart-badge {
+            top: -5px; 
+            right: -10px;
+            background-color: var(--secondary-color); /* Magenta badge */
+            color: var(--dark-bg);
+            border-radius: 50%;
+            padding: 3px 7px;
+            font-size: 0.75em;
+            font-weight: bold;
+            min-width: 20px;
+        }
+
+        /* BOOTSTRAP OVERRIDES */
+        .dropdown-menu {
+            background-color: #333; 
+            border: 1px solid var(--primary-color);
+        }
+        .dropdown-item:hover, .dropdown-item:focus {
+            background-color: #444;
+            color: var(--primary-color);
+        }
+        .dropdown-header {
+            color: var(--primary-color);
+        }
+        .btn-outline-dark {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: transparent;
+            text-shadow: 0 0 2px var(--primary-color);
+        }
+        .btn-outline-dark:hover {
+            color: var(--dark-bg);
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .btn-danger {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+        }
+
+        /* --- Main Content & Products --- */
+        .main-content {
+            padding: 40px 20px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2.5em; 
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-weight: 900;
+            text-shadow: 0 0 8px var(--primary-color), 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .product-grid {
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border: 1px solid #333; 
+            border-radius: 6px;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1); /* Subtle cyan shadow */
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px); 
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+            border-color: var(--primary-color);
+        }
+
+        .product-image {
+            height: 200px;
+            margin-bottom: 12px;
+            object-fit: cover; 
+            background-color: #111;
+        }
+
+        .product-title {
+            font-size: 1.1em;
+            color: var(--white);
+            margin-bottom: 5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .product-price {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--secondary-color); /* Magenta price tag */
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--primary-color); /* Neon Cyan button */
+            color: var(--dark-bg); 
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 10px 15px;
+            border-radius: 4px; 
+            font-size: 1em;
+            text-transform: uppercase;
+            border: none;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+        .add-to-cart-btn:hover {
+            background-color: var(--button-hover); 
+            box-shadow: 0 0 10px var(--primary-color); /* Hover glow */
+        }
+
+        /* --- Footer Styles --- */
+        .main-footer {
+            background-color: var(--header-bg); 
+            color: #ccc;
+            padding: 40px 20px 25px;
+            margin-top: 40px;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .footer-column h4 {
+            color: var(--primary-color); 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 2px var(--primary-color);
+        }
+
+        .footer-column p, .footer-column ul {
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .footer-column a {
+            color: var(--light-text-color);
+        }
+
+        .footer-column a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            color: #555;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="store-name">
+            <a href="index.html">⚡ Nexus Stream</a>
+        </div>
+        
+        <div class="discreet-search-container">
+            <i id="search-icon" class="fas fa-search"></i>
+            <input type="text" id="search-input-discreet" placeholder="Search the matrix...">
+        </div>
+        
+        <nav class="main-nav"></nav>
+        
+        <div class="header-actions">
+            <div class="dropdown">
+                <button class="btn btn-outline-dark" type="button" id="account-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" title="Account Login">
+                    <i class="fas fa-user-astronaut"></i>
+                </button>
+                
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="account-dropdown-toggle" id="account-dropdown-menu">
+                    </ul>
+            </div>
+            
+            <a href="admin-dashboard.html" class="btn btn-sm btn-danger ms-2 d-none" id="admin-dashboard-btn" title="Admin Control Panel">
+                <i class="fas fa-terminal"></i> Admin
+            </a>
+            
+            <div id="cart-icon-group" class="action-icon-group" title="Shopping Cart">
+                <i class="fas fa-cart-arrow-down"></i>
+                <span id="cart-count" class="cart-badge">0</span>
+                <span>Cart</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <h2 class="section-title">Velocity & Vision: Featured Hardware</h2>
+        
+        
+        <div class="product-grid">
+            
+            <div class="product-card">
+                <img src="images/tech-1.jpg" alt="Aether V2 Pro Gaming Headset" class="product-image">
+                <h3 class="product-title">Aether V2 Pro Gaming Headset</h3>
+                <p class="product-price">$199.99</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Aether V2 Pro Gaming Headset')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-2.jpg" alt="Mini PC" class="product-image">
+                <h3 class="product-title">Pico NUC Mini Desktop (i7)</h3>
+                <p class="product-price">$649.00</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Pico NUC Mini Desktop')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-3.jpg" alt="Mechanical Keyboard" class="product-image">
+                <h3 class="product-title">Chrono RGB Low-Profile Keyboard</h3>
+                <p class="product-price">$139.50</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Chrono RGB Low-Profile Keyboard')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-4.jpg" alt="Folding Drone" class="product-image">
+                <h3 class="product-title">Velocity Folding 4K Drone</h3>
+                <p class="product-price">$499.95</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Velocity Folding 4K Drone')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-5.jpg" alt="AR Smart Glasses" class="product-image">
+                <h3 class="product-title">Spectre AR Smart Glasses</h3>
+                <p class="product-price">$375.00</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Spectre AR Smart Glasses')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-6.jpg" alt="20000mAh Power Bank" class="product-image">
+                <h3 class="product-title">Titan 20K PD Power Bank</h3>
+                <p class="product-price">$65.00</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Titan 20K PD Power Bank')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-7.jpg" alt="Portable Monitor" class="product-image">
+                <h3 class="product-title">Streamline 16-inch Portable Monitor</h3>
+                <p class="product-price">$289.00</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Streamline 16-inch Portable Monitor')">Add to Cart</button>
+            </div>
+            
+            <div class="product-card">
+                <img src="images/tech-8.jpg" alt="Mesh WiFi Router" class="product-image">
+                <h3 class="product-title">Quantum Mesh WiFi 7 Router</h3>
+                <p class="product-price">$179.99</p>
+                <button class="add-to-cart-btn" onclick="addToCart('Quantum Mesh WiFi 7 Router')">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>About Nexus Stream</h4>
+                <p>We are dedicated to sourcing and delivering the future. High-performance, low latency, 100% innovation. Welcome to the stream.</p>
+                <p>Established: 2077</p>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Support Protocol</h4>
+                <ul>
+                    <li><a href="#">24/7 Live Chat</a></li>
+                    <li><a href="#">Shipping Latency</a></li>
+                    <li><a href="#">Firmware Updates</a></li>
+                    <li><a href="#">Warranties & RMA</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h4>Data Stream</h4>
+                <ul>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Ethics & AI Policy</a></li>
+                    <li><a href="#">Privacy Matrix</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h4>Connect & Follow</h4>
+                <p>Support Ping: <a href="mailto:support@nexusstream.net">support@nexusstream.net</a></p>
+                <p>Comms Link: (555) 010-1010</p>
+                <p>Follow our feeds:</p>
+                <ul>
+                    <li><a href="#">X / Twitter</a></li>
+                    <li><a href="#">Discord</a></li>
+                    <li><a href="#">Twitch</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2025 Nexus Stream Tech. All rights reserved. Powered by innovation.
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- State Variables: Load from Local Storage or default to false/0 ---
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' || false; 
+        let isAdminLoggedIn = localStorage.getItem('isAdminLoggedIn') === 'true' || false;
+        let cartItemCount = parseInt(localStorage.getItem('cartItemCount') || 0); 
+
+        // --- Element References ---
+        const cartCountDisplay = document.getElementById('cart-count');
+        const searchIcon = document.getElementById('search-icon'); 
+        const searchInputDiscreet = document.getElementById('search-input-discreet'); 
+        
+        // Account Dropdown Elements
+        const accountDropdownMenu = document.getElementById('account-dropdown-menu');
+        const adminBtn = document.getElementById('admin-dashboard-btn');
+
+        // --- Dynamic Header Logic ---
+
+        function renderAccountMenu() {
+            accountDropdownMenu.innerHTML = ''; // Clear existing items
+            
+            if (isLoggedIn) {
+                // --- Logged-In User Menu ---
+                accountDropdownMenu.innerHTML += `
+                    <li><h6 class="dropdown-header">Access Granted!</h6></li>
+                    <li><a class="dropdown-item" href="account-profile.html"><i class="fas fa-user-circle me-2"></i> User Profile</a></li>
+                    <li><a class="dropdown-item" href="orders.html"><i class="fas fa-box me-2"></i> Order History</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#" id="logout-link"><i class="fas fa-sign-out-alt me-2"></i> Log Out of System</a></li>
+                `;
+                // Setup Logout Listener AFTER creating the element
+                const logoutLink = document.getElementById('logout-link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', handleLogout);
+                }
+
+            } else {
+                // --- Logged-Out Menu ---
+                accountDropdownMenu.innerHTML += `
+                    <li><a class="dropdown-item" href="signup.html">
+                        <i class="fas fa-sign-in-alt me-2"></i> Access / Register
+                    </a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-muted" href="admin-login.html">Admin Login (Root)</a></li>
+                `;
+            }
+        }
+
+        function handleLogout(e) {
+            e.preventDefault();
+            // Clear all relevant session status keys
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('isAdminLoggedIn'); 
+            alert("Session terminated successfully. Come back soon!");
+            
+            // Reload the page to update the navigation bar state
+            window.location.reload(); 
+        }
+
+        function renderAdminButton() {
+            if (isAdminLoggedIn) {
+                adminBtn.classList.remove('d-none');
+            } else {
+                adminBtn.classList.add('d-none');
+            }
+        }
+
+        // --- Cart and Product Logic ---
+        
+        // Updates the cart count on the icon
+        function updateCartDisplay() {
+            cartCountDisplay.textContent = cartItemCount;
+            localStorage.setItem('cartItemCount', cartItemCount);
+        }
+
+        // Add to Cart Functionality 
+        function addToCart(productName) {
+            if (isLoggedIn) {
+                // If logged in, increment the cart counter and update storage
+                cartItemCount++;
+                updateCartDisplay();
+                alert(`🚀 ${productName} data packet secured and added to your Cart!`);
+            } else {
+                // If NOT logged in, prompt the user
+                const confirmLogin = confirm(
+                    "Error: Authentication required to proceed. Click OK to establish connection (Sign In/Register)."
+                );
+
+                if (confirmLogin) {
+                    window.location.href = 'signup.html';
+                }
+            }
+        }
+
+        // --- Event Listeners and Initialisation ---
+
+        // 1. Discreet Search Icon Toggle
+        searchIcon.addEventListener('click', function() {
+            // Toggle visibility of the discreet search input
+            searchInputDiscreet.style.display = searchInputDiscreet.style.display === 'block' ? 'none' : 'block';
+            if (searchInputDiscreet.style.display === 'block') {
+                searchInputDiscreet.focus();
+            }
+        });
+
+        // 2. Search Input (Simulate search on Enter key)
+        searchInputDiscreet.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = searchInputDiscreet.value;
+                alert(`Commencing high-speed search for data stream: "${query}"...`);
+                // Hide input after simulated search
+                searchInputDiscreet.style.display = 'none';
+            }
+        });
+
+        // 3. Cart Icon Click
+        document.getElementById('cart-icon-group').addEventListener('click', function() {
+            window.location.href = 'cart.html'; 
+        });
+
+        // Set the global function for use in onclick handlers
+        window.addToCart = addToCart;
+
+        // Initialize the page elements
+        updateCartDisplay();
+        renderAccountMenu();
+        renderAdminButton();
+
+    </script>
+
+</body>
+</html>

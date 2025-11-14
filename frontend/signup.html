@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Nexus Stream | Access Protocol</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* --- Root and Global Styles - NEON TECH THEME --- */
+        :root {
+            /* High-Contrast Neon Palette from index.html */
+            --primary-color: #00ffff; /* Neon Cyan/Blue */
+            --secondary-color: #ff00ff; /* Neon Magenta Accent */
+            --text-color: #f0f0f0;
+            --light-text-color: #B0B0B0;
+            --dark-bg: #0d0d0d; /* Deep Black Background */
+            --card-bg: #1a1a1a; /* Dark Card Background */
+            --button-hover: #00e5e5; /* Lighter cyan for hover */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- Card and Header Styling --- */
+        .auth-card {
+            max-width: 450px;
+            width: 90%;
+            background-color: var(--card-bg);
+            border: 1px solid #333; 
+            border-top: 5px solid var(--primary-color); /* Neon header line */
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2); /* Subtle neon glow */
+        }
+
+        .auth-header h4 {
+            color: var(--primary-color);
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 5px var(--primary-color);
+        }
+
+        .auth-header p {
+            color: var(--light-text-color);
+            font-size: 0.9em;
+        }
+
+        /* Form Input Styles */
+        .form-label {
+            color: var(--light-text-color);
+            font-size: 0.95em;
+        }
+        .form-control {
+            background-color: #2b2b2b;
+            border: 1px solid #444;
+            color: var(--text-color);
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-control:focus {
+            background-color: #2b2b2b;
+            color: var(--text-color);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(0, 255, 255, 0.25);
+        }
+
+        /* Custom Primary Button Style (Neon) */
+        .btn-primary-custom {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: var(--dark-bg);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary-custom:hover {
+            background-color: var(--button-hover);
+            border-color: var(--button-hover);
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        /* Link Styles */
+        .auth-card a {
+            color: var(--secondary-color); /* Neon Magenta link */
+            transition: color 0.2s;
+        }
+        .auth-card a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Status Messages */
+        .alert-success {
+            background-color: #1a4f4f; /* Darker green background */
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .alert-danger, .alert-warning {
+            color: var(--secondary-color);
+            background-color: #4f1a4f; /* Darker magenta background */
+            border-color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-card card p-4 shadow">
+    <div class="auth-header text-center mb-4">
+        <h4 class="mb-1">
+            <i class="fas fa-microchip me-2"></i> Initiate Access Protocol
+        </h4>
+        <p class="mb-0">Secure your profile in the Nexus Stream network.</p>
+    </div>
+    
+
+    <form id="signupForm">
+        <div class="mb-3">
+            <label for="name" class="form-label fw-bold">Full User Designation</label>
+            <input type="text" id="name" class="form-control" placeholder="Enter full name" required>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label fw-bold">Primary Comms Email</label>
+            <input type="email" id="email" class="form-control" placeholder="user@nexusstream.net" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="password" class="form-label fw-bold">Encryption Key</label>
+            <input type="password" id="password" class="form-control" placeholder="Minimum 6 characters" required minlength="6">
+        </div>
+
+        <div class="mb-4">
+            <label for="confirmPassword" class="form-label fw-bold">Confirm Encryption Key</label>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Retype password" required>
+        </div>
+        
+        <div id="statusMessage" class="mt-2 mb-4 d-none alert"></div>
+        
+        <button type="submit" class="btn btn-primary-custom w-100 py-2">
+            <i class="fas fa-user-plus me-2"></i> Establish Connection
+        </button>
+    </form>
+
+    <div class="text-center mt-3">
+        <p class="mb-1 text-muted">Already authenticated?</p>
+        <a href="admin-login.html" class="text-decoration-none">
+            <i class="fas fa-sign-in-alt me-1"></i> Log In to System
+        </a>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // NOTE: This API URL now points to the registration endpoint you created.
+    const API_URL = "http://localhost:5000/api/register"; 
+    const signupForm = document.getElementById("signupForm");
+    const statusMessage = document.getElementById("statusMessage");
+
+    // Show temporary status messages
+    function showStatus(message, type = 'success') {
+        statusMessage.textContent = message;
+        statusMessage.className = `mt-2 mb-4 alert alert-${type}`;
+        statusMessage.classList.remove('d-none');
+        
+        // Hide the message after 4 seconds
+        setTimeout(() => {
+            statusMessage.classList.add('d-none');
+        }, 4000);
+    }
+
+    // Handle form submission
+    signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            showStatus("Error: Encryption Keys do not match. Re-enter the credentials.", 'danger');
+            return;
+        }
+
+        if (password.length < 6) {
+             showStatus("Error: Encryption Key must be at least 6 characters long.", 'warning');
+             return;
+        }
+
+        try {
+            // --- ACTUAL API CALL TO NODE.JS SERVER ---
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                // Sending name, email, AND password to the /api/register endpoint
+                body: JSON.stringify({ name, email, password })
+            });
+
+            if (res.ok) {
+                // Successful registration
+                showStatus(`Access granted, ${name}! Your profile is now secure. Redirecting to the Mainframe...`, 'success');
+                signupForm.reset();
+                
+               // Set 'isLoggedIn' flag and redirect after a short delay
+               localStorage.setItem('isLoggedIn', 'true');
+               setTimeout(() => {
+               window.location.href = 'products.html'; // NEW REDIRECT TARGET
+               }, 2000);
+                
+            } else {
+                // Handle API error messages (like duplicate email)
+                const errorData = await res.json();
+                showStatus(`Connection terminated: ${errorData.message || res.statusText}`, 'danger');
+            }
+
+        } catch (error) {
+            console.error("Network Error during registration:", error);
+            showStatus("Network error. Could not connect to the Nexus server.", 'danger');
+        }
+    });
+</script>
+</body>
+</html>
